@@ -355,10 +355,51 @@ html {
     transform: translateX(0);
 }
 
+/* ---------- Floating Action Button (Mobile New Note) ---------- */
+#btnMobileNewNote {
+    display: none;
+    transition: all 0.2s ease;
+}
+#btnMobileNewNote:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(158, 206, 106, 0.4);
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 768px) {
     #editorPanel {
         width: 100% !important;
+    }
+    
+    /* Show mobile new note button */
+    #btnMobileNewNote {
+        display: flex;
+    }
+    
+    /* Hide canvas hint on mobile */
+    #canvasHint {
+        display: none;
+    }
+    
+    /* Make close editor button more prominent on mobile */
+    #btnCloseEditor {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(247, 118, 142, 0.15);
+        border: 1px solid rgba(247, 118, 142, 0.3);
+        border-radius: 10px;
+        color: #f7768e;
+    }
+    #btnCloseEditor:hover {
+        background: rgba(247, 118, 142, 0.25);
+        color: #ff8da1;
+    }
+    #btnCloseEditor svg {
+        width: 18px;
+        height: 18px;
     }
 }
     </style>
@@ -472,6 +513,14 @@ html {
                 <div class="tooltip-meta"></div>
             </div>
 
+            <!-- Mobile New Note Button (above zoom controls) -->
+            <button id="btnMobileNewNote" title="Criar Nova Nota"
+                    class="absolute bottom-[148px] right-4 w-11 h-11 bg-acc-green/90 hover:bg-acc-green border-2 border-acc-green/40 rounded-2xl flex items-center justify-center text-white z-20 shadow-lg shadow-acc-green/30 transition-all">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                </svg>
+            </button>
+
             <!-- Zoom Controls -->
             <div class="absolute bottom-4 right-4 flex flex-col gap-1 z-20">
                 <button id="btnZoomIn" title="Aumentar zoom"
@@ -528,7 +577,7 @@ html {
                                   d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                         </svg>
                     </button>
-                    <button id="btnCloseEditor"
+                    <button id="btnCloseEditor" title="Fechar Editor"
                             class="p-1.5 rounded-lg hover:bg-obs-700/50 text-obs-500 hover:text-obs-300 transition-colors">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
@@ -2395,6 +2444,7 @@ class MentalMapApp {
     _bindUI() {
         // New Note
         $('#btnNewNote').addEventListener('click', () => this.openNewNoteModal());
+        $('#btnMobileNewNote').addEventListener('click', () => this.openNewNoteModal());
         $('#btnConfirmNote').addEventListener('click', () => this._confirmNewNote());
         $('#btnCancelNote').addEventListener('click', () => Modal.close($('#newNoteModal')));
         $('#newNoteOverlay').addEventListener('click', () => Modal.close($('#newNoteModal')));
